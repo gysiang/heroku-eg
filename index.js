@@ -29,6 +29,17 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+app.get('/cats', (request, response) => {
+  console.log('request came in');
+  pool.query('SELECT * from cats').then((result) => {
+    console.log(result.rows[0].name);
+    response.send(result.rows);  
+  }).catch((error) => {
+    console.error('Error executing query', error.stack);
+    response.status(503).send(result.rows);
+  });;
+});
+
 app.get('/bananas', (request, response) => {
 
   const responseText = `This is a random number: ${Math.random()}`;
